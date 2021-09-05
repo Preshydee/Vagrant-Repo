@@ -1,67 +1,74 @@
-# ![React + Mobx Example App](project-logo.png)
-
-> ### React + Mobx codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
-
-### [Demo](https://react-mobx.realworld.io/)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
-
-Originally created for this [GH issue](https://github.com/reactjs/Redux/issues/1353). The codebase is now feature complete; please submit bug fixes via pull requests & feedback via issues.
-
-We're currently working on some docs for the codebase (explaining where functionality is located, how it works, etc) but most things should be self explanatory if you have a minimal understanding of React/Mobx.
+#VAGRANTFILE TO DEPLOY A NODEJS APP
 
 
-## Getting started
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-You can view a live demo over at https://react-mobx.realworld.io/
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
 
-To get the frontend running locally:
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "kieranpotts/nodejs14"
+  config.vm.box_version = "1.0.0"
 
-- Clone this repo
-- `npm install` to install all req'd dependencies
-- `npm start` to start the local server (this project uses create-react-app)
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
 
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.n
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
-### Making requests to the backend API
+  # Create a forwarded p_ort mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
-For convenience, we have a live API server running at https://conduit.productionready.io/api for the application to make requests against. You can view [the API spec here](https://github.com/GoThinkster/productionready/blob/master/api) which contains all routes & responses for the server.
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+   config.vm.network "private_network", ip: "192.168.33.10"
+  
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
 
-The source code for the backend server (available for Node, Rails and Django) can be found in the [main RealWorld repo](https://github.com/gothinkster/realworld).
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  config.vm.synced_folder ".", "/home/vagrant/react-mobx-realworld-example-master"
 
-If you want to change the API URL to a local server, simply edit `src/agent.js` and change `API_ROOT` to the local server's URL (i.e. `localhost:3000/api`)
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
 
-
-## Functionality overview
-
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://react-mobx.realworld.io/
-
-**General functionality:**
-
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU* users (sign up & settings page - no deleting required)
-- CRUD Articles
-- CR*D Comments on articles (no updating required)
-- GET and display paginated lists of articles
-- Favorite articles
-- Follow other users
-
-**The general page breakdown looks like this:**
-
-- Home page (URL: /#/ )
-    - List of tags
-    - List of articles pulled from either Feed, Global, or by Tag
-    - Pagination for list of articles
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-    - Use JWT (store the token in localStorage)
-- Settings page (URL: /#/settings )
-- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
-- Article page (URL: /#/article/article-slug-here )
-    - Delete article button (only shown to article's author)
-    - Render markdown from server client side
-    - Comments section at bottom of page
-    - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/@username, /#/@username/favorites )
-    - Show basic user info
-    - List of articles populated from author's created articles or author's favorited articles
-
-<br />
-
-[![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  #config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end
